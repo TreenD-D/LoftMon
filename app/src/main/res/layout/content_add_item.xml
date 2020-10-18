@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/addItemAct_addButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@color/white_two"
+        android:fontFamily="sans-serif-medium"
+        android:letterSpacing="0.04"
+        android:text="@string/addItemButton"
+        android:textColor="@color/white_three"
+        android:textSize="14sp"
+        android:textStyle="normal" />
+    <LinearLayout
+        android:layout_above="@id/addItemAct_addButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="33dp"
+        android:paddingEnd="104dp"
+        android:layout_marginBottom="61dp"
+        android:orientation="vertical">
+    <EditText
+        android:id="@+id/addItem_editTextPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="68dp"
+        android:backgroundTint="#1e000000"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:inputType="textPersonName"
+        android:lineSpacingExtra="0sp"
+        android:text="@string/addItemPrice"
+        android:textColor="#dbdbdb"
+        android:textSize="24sp"
+        android:textStyle="normal" />
+
+    <EditText
+        android:id="@+id/addItem_editTextName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#1e000000"
+        android:ems="10"
+        android:fontFamily="sans-serif"
+        android:inputType="textPersonName"
+        android:lineSpacingExtra="0sp"
+        android:text="@string/addItemName"
+        android:textColor="#dbdbdb"
+        android:textSize="24sp"
+        android:textStyle="normal" />
+    </LinearLayout>
+</RelativeLayout>

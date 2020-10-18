@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">LoftMon</string>
+    <string name="title_activity_add_item">AddItemActivity</string>
+    <string name="addItemButton">✓ ADD</string>
+    <string name="addItemName">Name</string>
+    <string name="addItemPrice">Price</string>
 </resources>
