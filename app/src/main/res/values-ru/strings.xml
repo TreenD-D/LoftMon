@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">LoftMon</string>
-    <string name="title_activity_add_item">AddItemActivity</string>
+    <string name="app_name">ЛофтДеньги</string>
     <string name="addItemButton">✓ ДОБАВИТЬ</string>
     <string name="addItemName">Название</string>
     <string name="addItemPrice">Цена</string>
