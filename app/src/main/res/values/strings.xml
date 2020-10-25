@@ -4,4 +4,6 @@
     <string name="addItemButton">✓ ADD</string>
     <string name="addItemName">Name</string>
     <string name="addItemPrice">Price</string>
+    <string name="expences">Expences</string>
+    <string name="income">Income</string>
 </resources>

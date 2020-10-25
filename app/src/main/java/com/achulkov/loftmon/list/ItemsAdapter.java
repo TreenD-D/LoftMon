@@ -25,6 +25,11 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         notifyDataSetChanged();
     }
 
+    public void addItem(MoneyItem item) {
+        moneyItemList.add(item);
+        notifyDataSetChanged();
+    }
+
     public void setMoneyCellAdapterClick(MoneyListClick moneyCellAdapterClick) {
         this.moneyCellAdapterClick = moneyCellAdapterClick;
     }

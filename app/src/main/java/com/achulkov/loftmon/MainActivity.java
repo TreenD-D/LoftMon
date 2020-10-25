@@ -1,29 +1,25 @@
 package com.achulkov.loftmon;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.widget.ViewPager2;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
-import com.achulkov.loftmon.list.MoneyItem;
-import com.achulkov.loftmon.list.ItemsAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+//import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    static final int ADD_ITEM = 1;
 
-    List<MoneyItem> moneyItems = new ArrayList<>();
-    ItemsAdapter itemsAdapter = new ItemsAdapter();
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,50 +27,42 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        TabLayout tabLayout = findViewById(R.id.tabs);
+
+        ViewPager2 viewPager = findViewById(R.id.viewpager);
+        viewPager.setAdapter(new BudgetPagerAdapter(getSupportFragmentManager(),getLifecycle()));
+
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText(R.string.expences + (position + 1))
+        ).attach();
+
+        tabLayout.getTabAt(0).setText(R.string.expences);
+        tabLayout.getTabAt(1).setText(R.string.income);
 
 
 
-        RecyclerView recyclerView = findViewById(R.id.itemsView);
-        recyclerView.setAdapter(itemsAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL,
-                false));
 
-        generateData();
+
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    static class BudgetPagerAdapter extends FragmentStateAdapter {
 
 
-        if (requestCode == ADD_ITEM){
-            if(resultCode == RESULT_OK) {
-                MoneyItem mItem = new MoneyItem(data.getStringExtra("ITEM_NAME"),data.getStringExtra("ITEM_PRICE"));
-                moneyItems.add(mItem);
-                itemsAdapter.setData(moneyItems);
-                itemsAdapter.notifyDataSetChanged();
-                for(MoneyItem item1:moneyItems)Log.i("items", item1.getTitle());
-            }
+        public BudgetPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
         }
 
-        super.onActivityResult(requestCode, resultCode, data);
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return new BudgetFragment();
+        }
+
+        @Override
+        public int getItemCount() {
+            return 2;
+        }
     }
 
-    private void generateData() {
-
-
-        moneyItems.add(new MoneyItem("Salary", "50000$"));
-        moneyItems.add(new MoneyItem("Taxes", "25000$"));
-        moneyItems.add(new MoneyItem("PS4", "1500$"));
-        moneyItems.add(new MoneyItem("Food", "3500$"));
-
-        itemsAdapter.setData(moneyItems);
-        itemsAdapter.notifyDataSetChanged();
-    }
-
-    public void onClickAddItem(View view){
-        Intent intent = new Intent(this, AddItemActivity.class);
-        startActivityForResult(intent, ADD_ITEM);
-    }
 
 }

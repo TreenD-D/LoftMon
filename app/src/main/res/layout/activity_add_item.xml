@@ -36,7 +36,7 @@
             android:fontFamily="sans-serif"
             android:inputType="textPersonName"
             android:lineSpacingExtra="0sp"
-            android:text="@string/addItemPrice"
+            android:hint="@string/addItemPrice"
             android:textColor="#dbdbdb"
             android:textSize="24sp"
             android:textStyle="normal" />
@@ -52,7 +52,7 @@
             android:fontFamily="sans-serif"
             android:inputType="textPersonName"
             android:lineSpacingExtra="0sp"
-            android:text="@string/addItemName"
+            android:hint="@string/addItemName"
             android:textColor="#dbdbdb"
             android:textSize="24sp"
             android:textStyle="normal" />
