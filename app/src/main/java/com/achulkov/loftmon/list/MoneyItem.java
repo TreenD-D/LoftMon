@@ -1,5 +1,7 @@
 package com.achulkov.loftmon.list;
 
+import com.achulkov.loftmon.remote.MoneyRemoteItem;
+
 public class MoneyItem {
     private String title;
     private String value;
@@ -15,5 +17,9 @@ public class MoneyItem {
 
     public String getValue() {
         return value;
+    }
+
+    public static MoneyItem getInstance(MoneyRemoteItem moneyRemoteItem) {
+        return new MoneyItem(moneyRemoteItem.getName(), moneyRemoteItem.getPrice() + "$");
     }
 }

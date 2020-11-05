@@ -1,9 +1,14 @@
 <resources>
     <string name="app_name">LoftMoney</string>
     <string name="title_activity_add_item" translatable="false">AddItemActivity</string>
-    <string name="addItemButton">✓ ADD</string>
+    <string name="addItemButton">ADD</string>
     <string name="addItemName">Name</string>
     <string name="addItemPrice">Price</string>
     <string name="expences">Expences</string>
     <string name="income">Income</string>
+    <string name="connection_lost">Connection lost</string>
+    <string name="fill_fields">Please fill all required fields</string>
+    <string name="success_added">Item added successfully</string>
+    <string name="action_login">Login</string>
+    <string name="activity_main_toolbar_title">Budget accounting</string>
 </resources>
