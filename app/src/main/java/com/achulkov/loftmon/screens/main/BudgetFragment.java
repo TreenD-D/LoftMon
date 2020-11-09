@@ -26,6 +26,7 @@ import com.achulkov.loftmon.remote.MoneyRemoteItem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -62,6 +64,8 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
 
     private MainViewModel mainViewModel;
     private ActionMode mActionMode;
+
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
 
@@ -229,20 +233,21 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
                         @Override
                         public void onClick(final DialogInterface dialogInterface, final int i) {
 
-                            
-                            for(Integer id: itemsAdapter.getSelectedItemIds()){
-                            mainViewModel.removeItems(
-                                    ((LoftApp) getActivity().getApplication()).moneyApi,
-                                    getActivity().getSharedPreferences(getString(R.string.app_name), 0),String.valueOf(id));
-                            }
+                            List<Integer> ids = itemsAdapter.getSelectedItemIds();
+                            Observable<Integer> idsObservable = Observable.fromIterable(ids);
+                            compositeDisposable.add(
+                                    idsObservable
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribe(id ->
+                                            {mainViewModel.removeItems(
+                                            ((LoftApp) getActivity().getApplication()).moneyApi,
+                                            getActivity().getSharedPreferences(getString(R.string.app_name), 0),String.valueOf(id));
 
-                            mainViewModel.loadItems(
-                                    ((LoftApp) getActivity().getApplication()).moneyApi,
-                                    getActivity().getSharedPreferences(getString(R.string.app_name), 0), getArguments().getString(TYPE)
-                            );
-                            itemsAdapter.clearSelections();
-                            actionMode.setTitle(getString(R.string.selected, String.valueOf(itemsAdapter.getSelectedSize())));
-                            itemsAdapter.notifyDataSetChanged();
+                                            }));
+
+                            updateData();
+                        actionMode.setTitle(getString(R.string.selected, String.valueOf(itemsAdapter.getSelectedSize())));
+
                         }
                     })
                     .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -256,7 +261,15 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
         return true;
     }
 
+    public void updateData(){
+        mainViewModel.loadItems(
+                ((LoftApp) getActivity().getApplication()).moneyApi,
+                getActivity().getSharedPreferences(getString(R.string.app_name), 0), getArguments().getString(TYPE)
+        );
+        itemsAdapter.clearSelections();
 
+        itemsAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public void onDestroyActionMode(final ActionMode actionMode) {
@@ -265,4 +278,10 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
         itemsAdapter.clearSelections();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        compositeDisposable.dispose();
+
+    }
 }
