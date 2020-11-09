@@ -1,6 +1,7 @@
 package com.achulkov.loftmon.screens.main;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -65,8 +66,10 @@ public class MainViewModel extends ViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(statusResponse -> {
+                    statusResp.setValue(statusResponse);
+   //                 Log.d("111", "111");
                 }, throwable -> {
-                    messageString.postValue(throwable.getLocalizedMessage());
+                    messageString.setValue(throwable.getLocalizedMessage());
                 }));
 
 

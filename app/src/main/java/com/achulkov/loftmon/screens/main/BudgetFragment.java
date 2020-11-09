@@ -180,6 +180,10 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
                 showToast(getString(message));
             }
         });
+
+        mainViewModel.statusResp.observe(this, message ->{
+            updateData();
+        });
     }
 
 
@@ -238,14 +242,12 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
                             compositeDisposable.add(
                                     idsObservable
                                     .subscribeOn(Schedulers.io())
-                                    .subscribe(id ->
-                                            {mainViewModel.removeItems(
+                                    .subscribe(id -> {
+                                            mainViewModel.removeItems(
                                             ((LoftApp) getActivity().getApplication()).moneyApi,
-                                            getActivity().getSharedPreferences(getString(R.string.app_name), 0),String.valueOf(id));
+                                            getActivity().getSharedPreferences(getString(R.string.app_name), 0),String.valueOf(id));}
 
-                                            }));
-
-                            updateData();
+                                            ));
                         actionMode.setTitle(getString(R.string.selected, String.valueOf(itemsAdapter.getSelectedSize())));
 
                         }
