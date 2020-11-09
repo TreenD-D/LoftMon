@@ -1,6 +1,7 @@
 package com.achulkov.loftmon.list;
 
 import android.content.Context;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     public MoneyListClick moneyCellAdapterClick;
     private final int colorId;
+
+    private SparseBooleanArray mSelectedItems = new SparseBooleanArray();
 
     public ItemsAdapter(final int colorId) {
         this.colorId = colorId;
@@ -42,7 +45,7 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
         notifyDataSetChanged();
     }
 
-    public void setMoneyCellAdapterClick(MoneyListClick moneyCellAdapterClick) {
+    public void setListener(final MoneyListClick moneyCellAdapterClick) {
         this.moneyCellAdapterClick = moneyCellAdapterClick;
     }
 
@@ -56,23 +59,27 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        holder.bind(moneyItemList.get(position));
+        holder.bind(moneyItemList.get(position), mSelectedItems.get(position));
+        holder.setListener(moneyCellAdapterClick, moneyItemList.get(position), position);
     }
+
 
     @Override
     public int getItemCount() {
         return moneyItemList.size();
     }
 
+
     static class ItemViewHolder extends RecyclerView.ViewHolder {
 
+        private View mItemView;
         private TextView titleTextView;
         private TextView valueTextView;
         private MoneyListClick moneyCellAdapterClick;
 
         public ItemViewHolder(@NonNull View itemView, final MoneyListClick moneyCellAdapterClick, final int colorId) {
             super(itemView);
-
+            mItemView = itemView;
             this.moneyCellAdapterClick = moneyCellAdapterClick;
 
             titleTextView = itemView.findViewById(R.id.moneyCellTitleView);
@@ -82,11 +89,12 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
             valueTextView.setTextColor(ContextCompat.getColor(context, colorId));
         }
 
-        public void bind(final MoneyItem moneyItem) {
+        public void bind(final MoneyItem moneyItem, final boolean isSelected) {
+            mItemView.setSelected(isSelected);
             titleTextView.setText(moneyItem.getTitle());
             valueTextView.setText(moneyItem.getValue());
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+/*            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (moneyCellAdapterClick != null) {
@@ -102,7 +110,65 @@ public class ItemsAdapter extends RecyclerView.Adapter<ItemsAdapter.ItemViewHold
                         moneyCellAdapterClick.onTitleClick();
                     }
                 }
+            });*/
+        }
+        public void setListener(final MoneyListClick listener, final MoneyItem item, final int position) {
+            mItemView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(final View view) {
+                    listener.onItemClick(item, position);
+                }
+            });
+
+            mItemView.setOnLongClickListener(new View.OnLongClickListener() {
+
+                @Override
+                public boolean onLongClick(final View view) {
+                    listener.onItemLongClick(item, position);
+                    return false;
+                }
             });
         }
     }
+
+
+
+    public void clearSelections() {
+        mSelectedItems.clear();
+        notifyDataSetChanged();
+    }
+
+    public void toggleItem(final int position) {
+        mSelectedItems.put(position, !mSelectedItems.get(position));
+        notifyDataSetChanged();
+    }
+
+    public void clearItem(final int position) {
+        mSelectedItems.put(position, false);
+        notifyDataSetChanged();
+    }
+
+    public int getSelectedSize() {
+        int result = 0;
+        for (int i = 0; i < moneyItemList.size(); i++) {
+            if (mSelectedItems.get(i)) {
+                result++;
+            }
+        }
+        return result;
+    }
+
+    public List<Integer> getSelectedItemIds() {
+        List<Integer> result = new ArrayList<>();
+        int i = 0;
+        for (MoneyItem item: moneyItemList) {
+            if (mSelectedItems.get(i)) {
+                result.add(item.getId());
+            }
+            i++;
+        }
+        return result;
+    }
+
 }

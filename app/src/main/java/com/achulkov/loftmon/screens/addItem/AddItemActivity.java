@@ -1,5 +1,6 @@
 package com.achulkov.loftmon.screens.addItem;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,6 +21,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -63,6 +65,11 @@ public class AddItemActivity extends AppCompatActivity {
 //        setResult(RESULT_OK,intent);
 //        finish();
     }
+
+
+
+
+
 
 
 
@@ -160,5 +167,12 @@ public class AddItemActivity extends AppCompatActivity {
         addItemAct_addButton.setEnabled(!TextUtils.isEmpty(mName) && !TextUtils.isEmpty(mPrice));
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        overridePendingTransition(R.anim.from_bottom_in,R.anim.to_top_out);
+    }
 
 }
