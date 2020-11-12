@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toggleFabIn(){
-        addItemButton.setVisibility(View.VISIBLE);
+        addItemButton.show();
     }
 
 
     public void toggleFabOut(){
-        addItemButton.setVisibility(View.INVISIBLE);
+        addItemButton.hide();
     }
 
 
@@ -79,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
                     return BudgetFragment.newInstance(R.color.apple_green,"income");
 
                 }
+                case 2: {
+                    return BalanceFragment.newInstance();
+
+                }
                 default:
                     return null;
             }
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return 2;
+            return 3;
         }
     }
 
@@ -97,6 +101,22 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPager2 viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(new BudgetPagerAdapter(getSupportFragmentManager(),getLifecycle()));
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+
+
+            @Override
+            public void onPageSelected(final int position) {
+
+                if (position == 2) {
+                    addItemButton.hide();
+                } else {
+
+                    addItemButton.show();
+                }
+            }
+
+        });
 
         new TabLayoutMediator(tabLayout, viewPager,
                 new TabLayoutMediator.TabConfigurationStrategy() {
@@ -109,6 +129,10 @@ public class MainActivity extends AppCompatActivity {
                             }
                             case 1: {
                                 tab.setText(R.string.income);
+                                break;
+                            }
+                            case 2: {
+                                tab.setText(R.string.balance);
                                 break;
                             }
                         }

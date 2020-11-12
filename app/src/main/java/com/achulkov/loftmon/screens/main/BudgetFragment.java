@@ -63,7 +63,7 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
     private MoneyApi mApi;
 
     private MainViewModel mainViewModel;
-    private ActionMode mActionMode;
+    private ActionMode mActionMode = null;
 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
@@ -83,10 +83,12 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApi = ((LoftApp)getActivity().getApplication()).getApi();
+
         configureViewModel();
         mainViewModel.loadItems(
                 ((LoftApp) getActivity().getApplication()).moneyApi,
                 getActivity().getSharedPreferences(getString(R.string.app_name), 0), getArguments().getString(TYPE));
+
     }
 
     @Nullable
@@ -123,9 +125,16 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
                 false));
 
 
+
+
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        super.onViewCreated(view, savedInstanceState);
+    }
 
     @Override
     public void onResume() {
@@ -167,6 +176,10 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         mainViewModel.moneyItemsList.observe(this, moneyItems -> {
             itemsAdapter.setData(moneyItems);
+            mainViewModel.loadBalance(
+                    ((LoftApp) getActivity().getApplication()).moneyApi,
+                    getActivity().getSharedPreferences(getString(R.string.app_name), 0));
+
         });
 
         mainViewModel.messageString.observe(this, message -> {
