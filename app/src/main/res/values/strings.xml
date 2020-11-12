@@ -11,4 +11,7 @@
     <string name="success_added">Item added successfully</string>
     <string name="action_login">Login</string>
     <string name="activity_main_toolbar_title">Budget accounting</string>
+    <string name="selected">Selected: %1$s</string>
+    <string name="remove">Remove</string>
+    <string name="confirmation">Are you sure to delete selected items?</string>
 </resources>

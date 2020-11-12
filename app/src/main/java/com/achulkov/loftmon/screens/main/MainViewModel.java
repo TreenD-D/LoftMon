@@ -1,6 +1,7 @@
 package com.achulkov.loftmon.screens.main;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
@@ -13,6 +14,7 @@ import com.achulkov.loftmon.list.MoneyItem;
 import com.achulkov.loftmon.remote.MoneyApi;
 import com.achulkov.loftmon.remote.MoneyRemoteItem;
 import com.achulkov.loftmon.remote.MoneyResponse;
+import com.achulkov.loftmon.remote.StatusResp;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,6 +30,7 @@ public class MainViewModel extends ViewModel {
     public MutableLiveData<List<MoneyItem>> moneyItemsList = new MutableLiveData<>();
     public MutableLiveData<String> messageString = new MutableLiveData<>("");
     public MutableLiveData<Integer> messageInt = new MutableLiveData<>(-1);
+    public MutableLiveData<StatusResp> statusResp = new MutableLiveData<>();
 
     @Override
     protected void onCleared() {
@@ -53,5 +56,42 @@ public class MainViewModel extends ViewModel {
                 }, throwable -> {
                     messageString.postValue(throwable.getLocalizedMessage());
                 }));
+    }
+
+    public void removeItems(MoneyApi moneyApi, SharedPreferences sharedPreferences, String id) {
+
+        String authToken = sharedPreferences.getString(LoftApp.AUTH_KEY, "");
+
+        compositeDisposable.add(moneyApi.removeItem(id, authToken)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(statusResponse -> {
+                    statusResp.setValue(statusResponse);
+   //                 Log.d("111", "111");
+                }, throwable -> {
+                    messageString.setValue(throwable.getLocalizedMessage());
+                }));
+
+
+        /*String token = PreferenceManager.getDefaultSharedPreferences(getContext()).getString(LoftApp.AUTH_KEY, "");
+        List<Integer> selectedItems = itemsAdapter.getSelectedItemIds();
+        for (Integer itemId : selectedItems) {
+            Call call = mApi.removeItem(String.valueOf(itemId.intValue()), token);
+            call.enqueue(new Callback<Status>() {
+
+                @Override
+                public void onResponse(
+                        final Call<Status> call, final Response<Status> response
+                ) {
+                    loadItems();
+                    mAdapter.clearSelections();
+                }
+
+                @Override
+                public void onFailure(final Call<Status> call, final Throwable t) {
+
+                }
+            });
+        }*/
     }
 }

@@ -10,4 +10,7 @@
     <string name="success_added">Добавление прошло успешно</string>
     <string name="action_login">Войти</string>
     <string name="activity_main_toolbar_title">Учёт бюджета</string>
+    <string name="selected">Выделено: %1$s</string>
+    <string name="confirmation">Вы действительно хотите удалить выбранные пункты?</string>
+    <string name="remove">Удалить</string>
 </resources>

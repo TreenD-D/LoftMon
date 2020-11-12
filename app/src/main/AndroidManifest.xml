@@ -22,7 +22,8 @@
         <activity android:name=".screens.login.LoginActivity"></activity>
         <activity
             android:name=".screens.addItem.AddItemActivity"
-            android:label="@string/title_activity_add_item"></activity>
+            android:label="@string/title_activity_add_item"
+            android:theme="@style/AddItemTheme"></activity>
 
         <activity android:name=".screens.main.MainActivity"></activity>
 

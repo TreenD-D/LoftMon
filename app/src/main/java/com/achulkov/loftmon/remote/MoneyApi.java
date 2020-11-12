@@ -1,9 +1,12 @@
 package com.achulkov.loftmon.remote;
 
+
+
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -19,4 +22,7 @@ public interface MoneyApi {
     @FormUrlEncoded
     Completable postMoney(@Field("price") int price, @Field("name") String name,
                           @Field("type") String type, @Field("auth-token") String authToken);
+
+    @POST("items/remove")
+    Single<StatusResp> removeItem(@Query("id") String id, @Query("auth-token") String authToken);
 }

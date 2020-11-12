@@ -6,9 +6,26 @@ public class MoneyItem {
     private String title;
     private String value;
 
+
+    private int id;
+
     public MoneyItem(String title, String value) {
         this.title = title;
         this.value = value;
+    }
+
+    public MoneyItem(String title, String value, int id) {
+        this.title = title;
+        this.value = value;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -20,6 +37,6 @@ public class MoneyItem {
     }
 
     public static MoneyItem getInstance(MoneyRemoteItem moneyRemoteItem) {
-        return new MoneyItem(moneyRemoteItem.getName(), moneyRemoteItem.getPrice() + "$");
+        return new MoneyItem(moneyRemoteItem.getName(), moneyRemoteItem.getPrice() + "$", Integer.parseInt(moneyRemoteItem.getItemId()));
     }
 }
