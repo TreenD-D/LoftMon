@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">LoftMoney</string>
     <string name="title_activity_add_item" translatable="false">AddItemActivity</string>
     <string name="addItemButton">ADD</string>
     <string name="addItemName">Name</string>

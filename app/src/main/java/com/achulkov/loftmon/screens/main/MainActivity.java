@@ -116,6 +116,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+                ActionMode actionMode;
+                final int position = viewPager.getCurrentItem();
+                Fragment fragment = getSupportFragmentManager().getFragments().get(position);
+                if (fragment instanceof BudgetFragment) {
+                    actionMode = ((BudgetFragment)fragment).getActionMode();
+                } else {
+                    actionMode = null;
+                }
+                switch (state) {
+                    case ViewPager2.SCROLL_STATE_DRAGGING:
+                    case ViewPager2.SCROLL_STATE_SETTLING:
+                        if (null != actionMode) actionMode.finish();
+                        break;
+                }
+            }
+
         });
 
         new TabLayoutMediator(tabLayout, viewPager,

@@ -68,6 +68,9 @@ public class BudgetFragment extends Fragment implements MoneyListClick, ActionMo
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
+    public ActionMode getActionMode() {
+        return mActionMode;
+    }
 
 
     public static BudgetFragment newInstance(final int colorId, final String type) {

@@ -38,6 +38,10 @@ public class BalanceFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mApi = ((LoftApp) getActivity().getApplication()).getApi();
 
+        configureViewModel();
+        mainViewModel.loadBalance(
+                ((LoftApp) getActivity().getApplication()).moneyApi,
+                getActivity().getSharedPreferences(getString(R.string.app_name), 0));
     }
 
     @Nullable
@@ -65,10 +69,7 @@ public class BalanceFragment extends Fragment {
             }
         });
 
-        configureViewModel();
-        mainViewModel.loadBalance(
-                ((LoftApp) getActivity().getApplication()).moneyApi,
-                getActivity().getSharedPreferences(getString(R.string.app_name), 0));
+
 
         return view;
     }
@@ -90,7 +91,7 @@ public class BalanceFragment extends Fragment {
     private void configureViewModel() {
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
-        mainViewModel.balanceResp.observe(getViewLifecycleOwner(), response ->{
+        mainViewModel.balanceResp.observe(this, response ->{
             final float totalExpenses = response.getTotalExpences();
             final float totalIncome = response.getTotalIncome();
 

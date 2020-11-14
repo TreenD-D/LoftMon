@@ -1,6 +1,7 @@
 package com.achulkov.loftmon.screens.main;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -21,12 +22,12 @@ public class DiagramView extends View {
 
     public DiagramView(final Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public DiagramView(final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
     public DiagramView(
@@ -35,7 +36,7 @@ public class DiagramView extends View {
             final int defStyleAttr
     ) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(attrs);
     }
 
     public DiagramView(
@@ -45,7 +46,7 @@ public class DiagramView extends View {
             final int defStyleRes
     ) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
+        init(attrs);
     }
 
     public void update(float expences, float income) {
@@ -54,10 +55,20 @@ public class DiagramView extends View {
         invalidate();
     }
 
-    private void init() {
-        expencePaint.setColor(ContextCompat.getColor(getContext(), R.color.dark_sky_blue));
-        incomePaint.setColor(ContextCompat.getColor(getContext(), R.color.apple_green));
+    private void init(@Nullable AttributeSet attrs) {
+/*        expencePaint.setColor(ContextCompat.getColor(getContext(), R.color.dark_sky_blue));
+        incomePaint.setColor(ContextCompat.getColor(getContext(), R.color.apple_green));*/
+
+        if (attrs == null) {
+            return;
+        }
+
+        TypedArray ta = getContext().obtainStyledAttributes(attrs, R.styleable.DiagramView);
+        expencePaint.setColor(ta.getColor(R.styleable.DiagramView_expenseColor, getResources().getColor(R.color.dark_sky_blue)));
+        incomePaint.setColor(ta.getColor(R.styleable.DiagramView_incomeColor, getResources().getColor(R.color.apple_green)));
+        ta.recycle();
     }
+
 
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
